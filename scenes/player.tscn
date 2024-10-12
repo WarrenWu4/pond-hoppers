@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://brwomb25mlbrb"]
+[gd_scene load_steps=7 format=3 uid="uid://brwomb25mlbrb"]
 
 [ext_resource type="Texture2D" uid="uid://b64l2dkyo6asv" path="res://assets/knight_idle_anim_f0.png" id="1_fo6oc"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_iu422"]
@@ -18,6 +18,13 @@ animations = [{
 radius = 5.0
 height = 12.0
 
+[sub_resource type="Gradient" id="Gradient_5ai8q"]
+colors = PackedColorArray(0.883847, 0.246969, 0.205937, 1, 0.462745, 1, 0.313726, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hkct0"]
+gradient = SubResource("Gradient_5ai8q")
+fill_to = Vector2(0, 1)
+
 [node name="Player" type="CharacterBody2D"]
 texture_filter = 1
 collision_mask = 3
@@ -33,3 +40,19 @@ zoom = Vector2(3, 3)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_ao8y4")
+
+[node name="PowerJump" type="Node2D" parent="."]
+
+[node name="PowerJumpGradient" type="TextureRect" parent="PowerJump"]
+offset_left = -3.0
+offset_top = -26.0
+offset_right = 3.0
+offset_bottom = -13.0
+texture = SubResource("GradientTexture2D_hkct0")
+expand_mode = 1
+
+[node name="PowerJumpIndicator" type="ColorRect" parent="PowerJump"]
+offset_left = -4.0
+offset_top = -15.0
+offset_right = 4.0
+offset_bottom = -13.0

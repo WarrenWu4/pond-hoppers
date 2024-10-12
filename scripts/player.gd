@@ -5,6 +5,9 @@ class_name Player
 @onready var camera_2d = $Camera2D
 @onready var level_manager = $"../LevelManager"
 @onready var animated_sprite_2d = $AnimatedSprite2D
+@onready var power_jump = $PowerJump
+@onready var power_jump_gradient = $PowerJump/PowerJumpGradient
+@onready var power_jump_indicator = $PowerJump/PowerJumpIndicator
 
 var gravity = 800
 var move_speed = 200
@@ -24,6 +27,7 @@ func _ready():
 	camera_2d.zoom = Vector2(viewport_size.x/tilemap_size.x, viewport_size.x/tilemap_size.x)
 	# offset the camera so that it starts at the bottom of the tile map
 	camera_2d.offset = Vector2(0, -48)
+	power_jump.hide()
 
 func _physics_process(delta):
 	# if not on floor (jumping) handle gravity
@@ -62,7 +66,11 @@ func handle_jump(delta):
 		elif Input.is_action_pressed("jump") and is_charging_jump:
 			charge_time += delta
 			charge_time = min(charge_time, max_charge_time)
+			power_jump.show()
+			handle_show_power(charge_time / max_charge_time)
 		elif Input.is_action_just_released("jump") and is_charging_jump:
+			power_jump.hide()
+			power_jump_indicator.position.y = -13
 			var jump_force = lerp(min_jump_force, max_jump_force, charge_time / max_charge_time)
 			velocity.y = jump_force
 			velocity.x = move_speed * move_direction
@@ -97,3 +105,7 @@ func detect_collisions_from_layer():
 					animated_sprite_2d.flip_h = true
 				else:
 					animated_sprite_2d.flip_h = false
+
+func handle_show_power(charge_ratio):
+	if (power_jump_indicator.position.y > -28):
+		power_jump_indicator.position.y = lerp(-13, -28, charge_ratio)
