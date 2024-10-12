@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djcphbdxsqgwq"
-path="res://.godot/imported/platforms.png-5982efe2a9951f8e6b9c239069233da9.ctex"
+uid="uid://nxwmb03p6sh"
+path="res://.godot/imported/ToungueSection.png-65f4737beb04edbc8088c3689f24e22c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/platforms.png"
-dest_files=["res://.godot/imported/platforms.png-5982efe2a9951f8e6b9c239069233da9.ctex"]
+source_file="res://assets/ToungueSection.png"
+dest_files=["res://.godot/imported/ToungueSection.png-65f4737beb04edbc8088c3689f24e22c.ctex"]
 
 [params]
 

@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://cddjoy52gov75"]
+
+[ext_resource type="Texture2D" uid="uid://nxwmb03p6sh" path="res://assets/ToungueSection.png" id="1_jmpca"]
+[ext_resource type="Script" path="res://scripts/toungue.gd" id="2_rwp6r"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hvc5h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yrala"]
+
+[node name="Toungue" type="Node2D"]
+script = ExtResource("2_rwp6r")
+
+[node name="Line2D" type="Line2D" parent="."]
+material = SubResource("CanvasItemMaterial_hvc5h")
+points = PackedVector2Array(0, 0)
+texture = ExtResource("1_jmpca")
+texture_mode = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_yrala")
