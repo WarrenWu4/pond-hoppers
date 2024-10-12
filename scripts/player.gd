@@ -2,6 +2,10 @@ extends CharacterBody2D
 
 class_name Player
 
+@onready var camera_2d = $Camera2D
+@onready var level_manager = $"../LevelManager"
+@onready var animated_sprite_2d = $AnimatedSprite2D
+
 var gravity = 800
 var move_speed = 200
 var min_jump_force = -200
@@ -13,6 +17,14 @@ var charge_time = 0.0
 var max_charge_time = 2
 var move_direction = 0
 
+func _ready():
+	# adjust the camera size
+	var viewport_size = get_viewport_rect().size
+	var tilemap_size = level_manager.get_child(0).get_used_rect().size*16
+	camera_2d.zoom = Vector2(viewport_size.x/tilemap_size.x, viewport_size.x/tilemap_size.x)
+	# offset the camera so that it starts at the bottom of the tile map
+	camera_2d.offset = Vector2(0, -48)
+
 func _physics_process(delta):
 	# if not on floor (jumping) handle gravity
 	if not is_on_floor():
@@ -22,6 +34,15 @@ func _physics_process(delta):
 		velocity.x = 0
 	
 	detect_collisions_from_layer()
+	
+	# logic for moving left and right
+	if is_on_floor() and not is_jumping and not Input.is_action_pressed("jump"):
+		if Input.is_action_pressed("move_left"):
+			velocity.x = -move_speed
+			animated_sprite_2d.flip_h = true
+		elif Input.is_action_pressed("move_right"):
+			velocity.x = move_speed
+			animated_sprite_2d.flip_h = false			
 		
 	handle_jump(delta)
 
@@ -47,11 +68,14 @@ func handle_jump(delta):
 			velocity.x = move_speed * move_direction
 			move_direction = 0
 			is_charging_jump = false
+			is_jumping = true
 	# projectile motion logic
 	if Input.is_action_just_pressed("move_left"):
 		move_direction = -1
+		animated_sprite_2d.flip_h = true
 	elif Input.is_action_just_pressed("move_right"):
 		move_direction = 1
+		animated_sprite_2d.flip_h = false
 	
 # linear interpolation between 2 values to scale the jump force
 func lerp(a, b, t):
@@ -67,5 +91,9 @@ func detect_collisions_from_layer():
 			#print(normal)
 		 	# add some sort of threshold for collision b/c
 			# might hit an object horizontally that's not a wall
-			if normal.x != 0:  # If the collision was horizontal (wall)
-				velocity.x = 1.2*move_speed  # Reverse the x velocity for bouncing
+			if normal.x != 0 and is_jumping:  # If the collision was horizontal (wall)
+				velocity.x = 1.2*move_speed*normal.x  # Reverse the x velocity for bouncing
+				if normal.x == -1:
+					animated_sprite_2d.flip_h = true
+				else:
+					animated_sprite_2d.flip_h = false
