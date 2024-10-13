@@ -22,18 +22,19 @@ texture = ExtResource("2_4vhfn")
 2:3/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_hfimn"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 2
 sources/0 = SubResource("TileSetAtlasSource_gb5v3")
 
 [node name="GameManager" type="Node"]
 
 [node name="Toungue" parent="." instance=ExtResource("1_kbl20")]
-position = Vector2(44, -12)
+position = Vector2(1, 0)
 
 [node name="Player" parent="." instance=ExtResource("1_hnu1a")]
+collision_mask = 2
 
 [node name="TempFloor" type="TileMap" parent="."]
 texture_filter = 1
 tile_set = SubResource("TileSet_hfimn")
 format = 2
-layer_0/tile_data = PackedInt32Array(131071, 65536, 0, 65536, 131072, 0)
+layer_0/tile_data = PackedInt32Array(131071, 65536, 0, 65536, 131072, 0, -65533, 131072, 0, -65534, 131072, 0, 131070, 131072, 0, 131069, 131072, 0, 131068, 131072, 0, 131067, 131072, 0, 131066, 131072, 0, 65537, 131072, 0, 65538, 131072, 0, 65539, 131072, 0, 65540, 131072, 0, 65541, 131072, 0, 65542, 131072, 0, 65543, 131072, 0, -2, 131072, 0, -3, 131072, 0, -4, 131072, 0)
