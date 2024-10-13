@@ -43,6 +43,8 @@ h1 {
   background-color: black;
   box-shadow: 0 0 2rem magenta;
   list-style: none;
+  max-height: 717px;
+  overflow-y: auto;
 }
 
 .leaderboard li {
