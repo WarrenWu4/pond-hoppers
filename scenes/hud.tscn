@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjtsmkrg2fo2n"]
+
+[ext_resource type="FontFile" uid="uid://qn8fxknm8ukl" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="1_fsd4q"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_gw8tb"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_gw8tb")
+
+[node name="TimerLabel" type="Label" parent="."]
+texture_filter = 1
+offset_left = 52.0
+offset_top = 32.0
+offset_right = 172.0
+offset_bottom = 55.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("1_fsd4q")
+theme_override_font_sizes/font_size = 16
+text = "00:00"

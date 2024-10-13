@@ -45,6 +45,29 @@ app.get("/placements", (req, res) => {
   res.status(200).send({ placements: dummyData });
 });
 
+app.post('/receive_time', async (req, res) => {
+    const { name, time } = req.body;
+    console.log(`body of request: ${name}, ${time}`);
+    if (!name || !time) {
+        return res.status(400).send({ message: 'Name and time are required' });
+    }
+    try {
+        await client.connect();
+        const db = client.db(dbName);
+        const collection = db.collection('times');
+        const result = await collection.insertOne({
+            name: name,
+            time: time,
+        });
+        console.log(`Successfully inserted document with _id: ${result.insertedId}`);
+        res.status(200).send({ message: 'Time received' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ message: 'Error saving data to database' });
+    } finally {
+        await client.close()
+    }
+  });
 // This shoulddddd work -- add some more data and test it
 // app.get("/placements", async (req, res) => {
 //   try {
@@ -61,30 +84,6 @@ app.get("/placements", (req, res) => {
 //     res.status(500).send({ message: "Error fetching leaderboard data" });
 //   }
 // });
-
-app.post("/receive_time", async (req, res) => {
-  const { name, time } = req.body;
-  console.log(`body of request: ${name}, ${time}`);
-  if (!name || !time) {
-    res.status(400).send({ message: "Name and time are required" });
-  }
-  try {
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection("times");
-    const result = await collection.insertOne({
-      name: name,
-      time: time,
-    });
-    console.log(
-      `Successfully inserted document with _id: ${result.insertedId}`
-    );
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ message: "Error saving data to database" });
-  }
-  res.status(200).send({ message: "Time received" });
-});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
