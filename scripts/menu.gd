@@ -8,20 +8,25 @@ extends CanvasLayer
 @onready var rich_text_label = $RichTextLabel
 @onready var text_edit = $TextEdit
 @onready var button_2 = $Button2
+@onready var texture_rect_2 = $Button/TextureRect2
+@onready var texture_rect_3 = $Button2/TextureRect3
 
 func _ready():
 	# hide username prompting
 	text_edit.hide()
 	button_2.hide()
+	texture_rect_3.hide()
 
 func _on_button_pressed():
 	# show username prompting
 	text_edit.show()
 	button_2.show()
+	texture_rect_3.show()	
 	# hide other elements
 	background.hide()
 	button.hide()
 	rich_text_label.hide()
+	texture_rect_2.hide()
 
 func _on_button_2_pressed():
 	# store username somewhere

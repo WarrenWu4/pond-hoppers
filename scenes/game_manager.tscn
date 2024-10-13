@@ -6,28 +6,19 @@
 [ext_resource type="PackedScene" uid="uid://blyf0bdxf1abh" path="res://scenes/hud.tscn" id="2_76kmi"]
 [ext_resource type="Texture2D" uid="uid://bf7gwx6qt7uvi" path="res://assets/frog/Main Ship - Base - Full health.png" id="5_pv66r"]
 [ext_resource type="PackedScene" path="res://scenes/toungue.tscn" id="6_hquo0"]
-[ext_resource type="Texture2D" uid="uid://nxwmb03p6sh" path="res://assets/ToungueSection.png" id="7_w8t14"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nqsp8"]
+[ext_resource type="Texture2D" uid="uid://cv5sqpvibojtd" path="res://assets/toungueBlockCobble.png" id="7_uhon7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6c24u"]
 size = Vector2(30, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mdx7e"]
+size = Vector2(478.001, 459.5)
 
 [node name="GameManager" type="Node"]
 script = ExtResource("1_v3bue")
 
 [node name="Toungue" parent="." instance=ExtResource("6_hquo0")]
 position = Vector2(1, 0)
-
-[node name="ToungueSection" type="Sprite2D" parent="." groups=["target_blocks"]]
-position = Vector2(9, -76)
-texture = ExtResource("7_w8t14")
-
-[node name="Area2D" type="Area2D" parent="ToungueSection" groups=["target_blocks"]]
-collision_layer = 8
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ToungueSection/Area2D"]
-shape = SubResource("RectangleShape2D_nqsp8")
 
 [node name="HUD" parent="." instance=ExtResource("2_76kmi")]
 
@@ -38,7 +29,7 @@ shape = SubResource("RectangleShape2D_nqsp8")
 [node name="Timer" type="Timer" parent="."]
 
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2(2, -302)
+position = Vector2(22, -606)
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 texture_filter = 1
@@ -46,5 +37,18 @@ texture = ExtResource("5_pv66r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_6c24u")
+
+[node name="ToungueSection" type="Sprite2D" parent="." groups=["target_blocks"]]
+position = Vector2(73, -330)
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("7_uhon7")
+
+[node name="Area2D" type="Area2D" parent="ToungueSection" groups=["target_blocks"]]
+position = Vector2(233.333, 366.668)
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToungueSection/Area2D"]
+position = Vector2(-200, -366.667)
+shape = SubResource("RectangleShape2D_mdx7e")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

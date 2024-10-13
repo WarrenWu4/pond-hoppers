@@ -53,7 +53,7 @@ func _physics_process(delta):
 	else:
 		velocity.x = 0
 		
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if Input.is_action_just_pressed("use_tongue"):
 		find_nearest_target()
 	
 	detect_collisions_from_layer()
