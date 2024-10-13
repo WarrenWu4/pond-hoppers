@@ -100,7 +100,6 @@ func retract(delta):
 		#is_retracting = false  # Stop retracting once the endpoint is reached
 
 func retract_when_hit_fn(delta):
-	print('hit')
 	if line.points.size() < 2:
 		return  # Ensure there are two points to retract between
 
