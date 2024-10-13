@@ -1,34 +1,101 @@
-[gd_scene load_steps=5 format=3 uid="uid://brwomb25mlbrb"]
+[gd_scene load_steps=13 format=3 uid="uid://brwomb25mlbrb"]
 
-[ext_resource type="Texture2D" uid="uid://b64l2dkyo6asv" path="res://assets/knight_idle_anim_f0.png" id="1_fo6oc"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_iu422"]
+[ext_resource type="Texture2D" uid="uid://cfr0wd774bms2" path="res://assets/frog/Idle.png" id="2_r7aeb"]
+[ext_resource type="Texture2D" uid="uid://c05osrwd2hgk" path="res://assets/frog/Jump.png" id="3_15ybi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lex4o"]
+atlas = ExtResource("2_r7aeb")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iyk1w"]
+atlas = ExtResource("2_r7aeb")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_awutx"]
+atlas = ExtResource("2_r7aeb")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3csvv"]
+atlas = ExtResource("2_r7aeb")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g21ut"]
+atlas = ExtResource("3_15ybi")
+region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_smmil"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_fo6oc")
+"texture": SubResource("AtlasTexture_lex4o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iyk1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_awutx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3csvv")
 }],
 "loop": true,
 "name": &"idle",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g21ut")
+}],
+"loop": true,
+"name": &"jumping",
+"speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ao8y4"]
-radius = 5.0
-height = 12.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_konui"]
+size = Vector2(15, 9)
+
+[sub_resource type="Gradient" id="Gradient_5ai8q"]
+colors = PackedColorArray(0.883847, 0.246969, 0.205937, 1, 0.462745, 1, 0.313726, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hkct0"]
+gradient = SubResource("Gradient_5ai8q")
+fill_to = Vector2(0, 1)
 
 [node name="Player" type="CharacterBody2D"]
 texture_filter = 1
+collision_mask = 3
 script = ExtResource("1_iu422")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1.19209e-07, -8.9407e-08)
+scale = Vector2(0.765625, 0.719688)
 sprite_frames = SubResource("SpriteFrames_smmil")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_ao8y4")
-
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(3, 3)
+limit_left = -128
+limit_right = 128
+limit_bottom = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 1.5)
+shape = SubResource("RectangleShape2D_konui")
+
+[node name="PowerJump" type="Node2D" parent="."]
+
+[node name="PowerJumpGradient" type="TextureRect" parent="PowerJump"]
+offset_left = -3.0
+offset_top = -22.0
+offset_right = 3.0
+offset_bottom = -9.0
+texture = SubResource("GradientTexture2D_hkct0")
+expand_mode = 1
+
+[node name="PowerJumpIndicator" type="ColorRect" parent="PowerJump"]
+offset_left = -4.0
+offset_top = -11.0
+offset_right = 4.0
+offset_bottom = -9.0

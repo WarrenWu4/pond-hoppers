@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://brwomb25mlbrb"]
+
+[ext_resource type="Texture2D" uid="uid://b64l2dkyo6asv" path="res://assets/knight_idle_anim_f0.png" id="1_fo6oc"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_iu422"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_smmil"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fo6oc")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ao8y4"]
+radius = 5.0
+height = 12.0
+
+[node name="Player" type="CharacterBody2D"]
+texture_filter = 1
+collision_mask = 3
+script = ExtResource("1_iu422")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_smmil")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_ao8y4")
