@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://blyf0bdxf1abh"]
+[gd_scene load_steps=4 format=3 uid="uid://blyf0bdxf1abh"]
 
 [ext_resource type="FontFile" uid="uid://qn8fxknm8ukl" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="1_fsd4q"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_gw8tb"]
+[ext_resource type="Texture2D" uid="uid://do8bovah3vh7j" path="res://assets/thermometer.png" id="3_k16hl"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_gw8tb")
@@ -17,3 +18,26 @@ size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("1_fsd4q")
 theme_override_font_sizes/font_size = 16
 text = "00:00"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -117.0
+offset_top = 32.0
+offset_right = -52.0
+offset_bottom = 72.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+
+[node name="TemperatureLabel" type="Label" parent="HBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_fsd4q")
+theme_override_font_sizes/font_size = 16
+text = "70 °F"
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("3_k16hl")

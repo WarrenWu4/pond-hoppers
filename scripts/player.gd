@@ -9,17 +9,19 @@ class_name Player
 @onready var power_jump_gradient = $PowerJump/PowerJumpGradient
 @onready var power_jump_indicator = $PowerJump/PowerJumpIndicator
 @onready var http_request = $HTTPRequest
+@onready var label = $Label
 
 var gravity = 800
-var move_speed = 150
+var move_speed = 125
 var min_jump_force = -200
 var max_jump_force = -400
 
 var is_jumping = false
 var is_charging_jump = false
 var charge_time = 0.0
-var max_charge_time = 2
+var max_charge_time = 1.2
 var move_direction = 0
+var jump_power_multiplier = 1
 
 var allow_movement = true
 
@@ -31,12 +33,14 @@ func _ready():
 	var tilemap_size = level_manager.get_child(0).get_used_rect().size*16
 	camera_2d.zoom = Vector2(viewport_size.x/tilemap_size.x, viewport_size.x/tilemap_size.x)
 	
-	# hide the power meter initially
+	# hide the power meter initially and death label
 	power_jump.hide()
+	label.hide()
 	
 	# get game manager node
 	var game_manager = get_parent()
 	game_manager.gc_signal.connect(_on_game_complete)
+	game_manager.curr_temp.connect(_handle_temp)
 	
 func _physics_process(delta):
 	# if not on floor (jumping) handle gravity
@@ -63,7 +67,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 	# Reset jumping state when back on the ground
-	if is_on_floor():
+	if allow_movement and is_on_floor():
 		is_jumping = false
 		animated_sprite_2d.play("idle")
 
@@ -84,8 +88,8 @@ func handle_jump(delta):
 			power_jump.hide()
 			power_jump_indicator.position.y = -11
 			var jump_force = lerp(min_jump_force, max_jump_force, charge_time / max_charge_time)
-			velocity.y = jump_force
-			velocity.x = move_speed * move_direction
+			velocity.y = jump_force * jump_power_multiplier
+			velocity.x = move_speed * move_direction * jump_power_multiplier
 			move_direction = 0
 			is_charging_jump = false
 			is_jumping = true
@@ -151,4 +155,22 @@ func _on_game_complete(data):
 	allow_movement = false
 	animated_sprite_2d.hide()
 	
-	
+func _handle_temp(data):
+	var temp = data
+	if (temp >= 80):
+		# initiate death
+		allow_movement = false
+		animated_sprite_2d.play("DEATH")
+		label.show()
+	var multiplier_ratio = clamp(0, temp-100, 300)
+	jump_power_multiplier = min(1 - 0.5 * multiplier_ratio/300, 1)
+
+func restart_game():
+	var current_scene = get_tree().current_scene
+	var current_scene_file = current_scene.scene_file_path
+	get_tree().change_scene_to_file(current_scene_file)
+
+
+func _on_animated_sprite_2d_animation_finished():
+	if (animated_sprite_2d.animation == "DEATH"):
+		restart_game()

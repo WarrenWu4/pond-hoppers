@@ -10,6 +10,7 @@ var elapsed_time = 0.0
 var game_complete = false
 
 signal gc_signal(data)
+signal curr_temp(data)
 
 func _process(delta):
 	# get time in min and sec
@@ -18,6 +19,8 @@ func _process(delta):
 		var minutes = int(elapsed_time)/60
 		var seconds = int(elapsed_time)%60
 		hud.update_timer(minutes, seconds)
+		hud.update_temperature(70+int(elapsed_time))
+		emit_signal("curr_temp", 70+int(elapsed_time))
 	
 func _on_area_2d_body_entered(body):
 	if (body.is_in_group("player")):

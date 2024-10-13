@@ -1,8 +1,35 @@
-[gd_scene load_steps=14 format=3 uid="uid://brwomb25mlbrb"]
+[gd_scene load_steps=23 format=3 uid="uid://brwomb25mlbrb"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_iu422"]
 [ext_resource type="Texture2D" uid="uid://cfr0wd774bms2" path="res://assets/frog/Idle.png" id="2_r7aeb"]
 [ext_resource type="Texture2D" uid="uid://c05osrwd2hgk" path="res://assets/frog/Jump.png" id="3_15ybi"]
+[ext_resource type="Texture2D" uid="uid://jb1pofbvv5gk" path="res://assets/frog/Hurt.png" id="3_jwg1o"]
+[ext_resource type="Texture2D" uid="uid://s437maxivxn" path="res://assets/frog/Death.png" id="4_68dtp"]
+[ext_resource type="FontFile" uid="uid://pu4yrk4ymhqo" path="res://assets/fonts/PixelOperator8.ttf" id="6_wrk8t"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qq0gc"]
+atlas = ExtResource("3_jwg1o")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmtsa"]
+atlas = ExtResource("3_jwg1o")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_64he6"]
+atlas = ExtResource("3_jwg1o")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kc2j"]
+atlas = ExtResource("3_jwg1o")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cpws4"]
+atlas = ExtResource("4_68dtp")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cdtlq"]
+atlas = ExtResource("4_68dtp")
+region = Rect2(192, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lex4o"]
 atlas = ExtResource("2_r7aeb")
@@ -26,6 +53,29 @@ region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_smmil"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qq0gc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmtsa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_64he6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kc2j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cpws4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cdtlq")
+}],
+"loop": false,
+"name": &"DEATH",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_lex4o")
@@ -84,8 +134,10 @@ script = ExtResource("1_iu422")
 position = Vector2(1.19209e-07, -8.9407e-08)
 scale = Vector2(0.765625, 0.719688)
 sprite_frames = SubResource("SpriteFrames_smmil")
-animation = &"idle"
+animation = &"DEATH"
 autoplay = "idle"
+frame = 5
+frame_progress = 1.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(3, 3)
@@ -116,4 +168,15 @@ offset_bottom = -9.0
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 script = SubResource("GDScript_vb0y2")
 
+[node name="Label" type="Label" parent="."]
+texture_filter = 1
+offset_left = -54.0
+offset_top = -17.0
+offset_right = 56.0
+offset_bottom = 6.0
+theme_override_fonts/font = ExtResource("6_wrk8t")
+theme_override_font_sizes/font_size = 8
+text = "you overheated :("
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
