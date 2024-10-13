@@ -12,7 +12,7 @@
 size = Vector2(30, 26)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mdx7e"]
-size = Vector2(478.001, 459.5)
+size = Vector2(439, 496.416)
 
 [node name="GameManager" type="Node"]
 script = ExtResource("1_v3bue")
@@ -49,6 +49,20 @@ collision_layer = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ToungueSection/Area2D"]
 position = Vector2(-200, -366.667)
+shape = SubResource("RectangleShape2D_mdx7e")
+
+[node name="ToungueSection2" type="Sprite2D" parent="." groups=["target_blocks"]]
+position = Vector2(-43, -499)
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("7_uhon7")
+
+[node name="Area2D" type="Area2D" parent="ToungueSection2" groups=["target_blocks"]]
+position = Vector2(233.333, 366.668)
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToungueSection2/Area2D"]
+position = Vector2(-233.333, -366.668)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_mdx7e")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

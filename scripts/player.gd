@@ -138,7 +138,7 @@ func handle_show_power(charge_ratio):
 
 func store_time(name, time):
 	# make an http post request to backend to update leaderboard
-	var url = "https://hippityhoppity.club/receive_time"
+	var url = "https://www.hippityhoppity.club/receive_time"
 	var headers = ["Content-Type: application/json"]
 	var body = {
 		"name": name,
