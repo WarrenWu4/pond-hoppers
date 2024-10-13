@@ -1,5 +1,8 @@
 extends Node
 
+@onready var game_node = get_parent()
+@onready var end_cut_scene = preload("res://scenes/end_cut_scene.tscn")
+
 @onready var hud = $HUD
 @onready var sprite_2d = $Area2D/Sprite2D
 
@@ -22,3 +25,5 @@ func _on_area_2d_body_entered(body):
 		var froggy_ship = load("res://assets/frog/frogInRocket.png")
 		sprite_2d.texture = froggy_ship
 		emit_signal("gc_signal", elapsed_time)
+		var end_cut_scene_instance = end_cut_scene.instantiate()
+		game_node.add_child(end_cut_scene_instance)
