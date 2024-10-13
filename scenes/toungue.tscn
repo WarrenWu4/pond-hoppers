@@ -6,7 +6,7 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hvc5h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yrala"]
-size = Vector2(10, 10)
+size = Vector2(7, 7)
 
 [node name="Toungue" type="Node2D"]
 script = ExtResource("2_rwp6r")
