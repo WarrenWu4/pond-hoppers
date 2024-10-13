@@ -8,6 +8,7 @@ class_name Player
 @onready var power_jump = $PowerJump
 @onready var power_jump_gradient = $PowerJump/PowerJumpGradient
 @onready var power_jump_indicator = $PowerJump/PowerJumpIndicator
+@onready var http_request = $HTTPRequest
 
 var gravity = 800
 var move_speed = 150
@@ -25,8 +26,10 @@ func _ready():
 	var viewport_size = get_viewport_rect().size
 	var tilemap_size = level_manager.get_child(0).get_used_rect().size*16
 	camera_2d.zoom = Vector2(viewport_size.x/tilemap_size.x, viewport_size.x/tilemap_size.x)
-	# offset the camera so that it starts at the bottom of the tile map
+	
+	# hide the power meter initially
 	power_jump.hide()
+	on_game_complete(GameData.username)
 	
 func _physics_process(delta):
 	# if not on floor (jumping) handle gravity
@@ -111,3 +114,24 @@ func detect_collisions_from_layer():
 func handle_show_power(charge_ratio):
 	if (power_jump_indicator.position.y > -24):
 		power_jump_indicator.position.y = lerp(-13, -24, charge_ratio)
+
+func on_game_complete(name):
+	# make an http post request to backend to update leaderboard
+	var url = "http://localhost:8080/receive_time"
+	var headers = ["Content-Type: application/json"]
+	var body = {
+		"name": name,
+		"time": 10
+	}
+	var error = http_request.request(
+		url,
+		headers,
+		HTTPClient.METHOD_POST, 
+		JSON.stringify(body)
+	)
+	
+	if error != OK:
+		print("error occurred:", error)
+
+func _on_http_request_request_completed(result, response_code, headers, body):
+	print("request completed")

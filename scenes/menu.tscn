@@ -1,0 +1,74 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw5j8lm8lxqx"]
+
+[ext_resource type="Script" path="res://scripts/menu.gd" id="1_0s5ml"]
+[ext_resource type="Texture2D" uid="uid://0v67jg2ms8f5" path="res://assets/menu/99ae6bdc-98cb-4858-9734-c359f60c3acf-0.png" id="1_bgsnj"]
+
+[node name="Menu" type="CanvasLayer"]
+script = ExtResource("1_0s5ml")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -247.0
+offset_top = -199.0
+offset_right = 247.0
+offset_bottom = 199.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_bgsnj")
+expand_mode = 1
+
+[node name="Button" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.5
+offset_top = -235.0
+offset_right = 20.5
+offset_bottom = -204.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "play"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -53.0
+offset_top = 209.0
+offset_right = 53.0
+offset_bottom = 249.0
+grow_horizontal = 2
+text = "tree hoppers"
+
+[node name="TextEdit" type="TextEdit" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -152.0
+offset_top = -19.0
+offset_right = 152.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "enter your name"
+
+[node name="Button2" type="Button" parent="."]
+visible = false
+offset_left = 262.0
+offset_top = 492.0
+offset_right = 324.0
+offset_bottom = 523.0
+size_flags_horizontal = 4
+text = "submit"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
