@@ -157,7 +157,7 @@ func _on_game_complete(data):
 	
 func _handle_temp(data):
 	var temp = data
-	if (temp >= 80):
+	if (temp >= 350):
 		# initiate death
 		allow_movement = false
 		animated_sprite_2d.play("DEATH")
