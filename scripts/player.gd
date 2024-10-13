@@ -10,7 +10,7 @@ class_name Player
 @onready var power_jump_indicator = $PowerJump/PowerJumpIndicator
 
 var gravity = 800
-var move_speed = 200
+var move_speed = 150
 var min_jump_force = -200
 var max_jump_force = -400
 
@@ -26,9 +26,8 @@ func _ready():
 	var tilemap_size = level_manager.get_child(0).get_used_rect().size*16
 	camera_2d.zoom = Vector2(viewport_size.x/tilemap_size.x, viewport_size.x/tilemap_size.x)
 	# offset the camera so that it starts at the bottom of the tile map
-	camera_2d.offset = Vector2(0, -48)
 	power_jump.hide()
-
+	
 func _physics_process(delta):
 	# if not on floor (jumping) handle gravity
 	if not is_on_floor():
@@ -43,10 +42,10 @@ func _physics_process(delta):
 	if is_on_floor() and not is_jumping and not Input.is_action_pressed("jump"):
 		if Input.is_action_pressed("move_left"):
 			velocity.x = -move_speed
-			animated_sprite_2d.flip_h = true
+			animated_sprite_2d.flip_h = false
 		elif Input.is_action_pressed("move_right"):
 			velocity.x = move_speed
-			animated_sprite_2d.flip_h = false			
+			animated_sprite_2d.flip_h = true			
 		
 	handle_jump(delta)
 
@@ -56,6 +55,7 @@ func _physics_process(delta):
 	# Reset jumping state when back on the ground
 	if is_on_floor():
 		is_jumping = false
+		animated_sprite_2d.play("idle")
 
 func handle_jump(delta):
 	# charging jump logic
@@ -70,20 +70,22 @@ func handle_jump(delta):
 			handle_show_power(charge_time / max_charge_time)
 		elif Input.is_action_just_released("jump") and is_charging_jump:
 			power_jump.hide()
-			power_jump_indicator.position.y = -13
+			power_jump_indicator.position.y = -11
 			var jump_force = lerp(min_jump_force, max_jump_force, charge_time / max_charge_time)
 			velocity.y = jump_force
 			velocity.x = move_speed * move_direction
 			move_direction = 0
 			is_charging_jump = false
 			is_jumping = true
+			animated_sprite_2d.play("jumping")
+			
 	# projectile motion logic
 	if Input.is_action_just_pressed("move_left"):
 		move_direction = -1
-		animated_sprite_2d.flip_h = true
+		animated_sprite_2d.flip_h = false
 	elif Input.is_action_just_pressed("move_right"):
 		move_direction = 1
-		animated_sprite_2d.flip_h = false
+		animated_sprite_2d.flip_h = true
 	
 # linear interpolation between 2 values to scale the jump force
 func lerp(a, b, t):
@@ -102,10 +104,10 @@ func detect_collisions_from_layer():
 			if normal.x != 0 and is_jumping:  # If the collision was horizontal (wall)
 				velocity.x = 1.2*move_speed*normal.x  # Reverse the x velocity for bouncing
 				if normal.x == -1:
-					animated_sprite_2d.flip_h = true
-				else:
 					animated_sprite_2d.flip_h = false
+				else:
+					animated_sprite_2d.flip_h = true
 
 func handle_show_power(charge_ratio):
-	if (power_jump_indicator.position.y > -28):
-		power_jump_indicator.position.y = lerp(-13, -28, charge_ratio)
+	if (power_jump_indicator.position.y > -24):
+		power_jump_indicator.position.y = lerp(-13, -24, charge_ratio)
