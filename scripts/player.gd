@@ -21,7 +21,11 @@ var charge_time = 0.0
 var max_charge_time = 2
 var move_direction = 0
 
+var allow_movement = true
+
 func _ready():
+	# add player to the player ground
+	add_to_group("player")
 	# adjust the camera size
 	var viewport_size = get_viewport_rect().size
 	var tilemap_size = level_manager.get_child(0).get_used_rect().size*16
@@ -29,7 +33,10 @@ func _ready():
 	
 	# hide the power meter initially
 	power_jump.hide()
-	on_game_complete(GameData.username)
+	
+	# get game manager node
+	var game_manager = get_parent()
+	game_manager.gc_signal.connect(_on_game_complete)
 	
 func _physics_process(delta):
 	# if not on floor (jumping) handle gravity
@@ -42,7 +49,7 @@ func _physics_process(delta):
 	detect_collisions_from_layer()
 	
 	# logic for moving left and right
-	if is_on_floor() and not is_jumping and not Input.is_action_pressed("jump"):
+	if allow_movement and is_on_floor() and not is_jumping and not Input.is_action_pressed("jump"):
 		if Input.is_action_pressed("move_left"):
 			velocity.x = -move_speed
 			animated_sprite_2d.flip_h = false
@@ -61,6 +68,8 @@ func _physics_process(delta):
 		animated_sprite_2d.play("idle")
 
 func handle_jump(delta):
+	if not allow_movement:
+		return
 	# charging jump logic
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
@@ -115,13 +124,13 @@ func handle_show_power(charge_ratio):
 	if (power_jump_indicator.position.y > -24):
 		power_jump_indicator.position.y = lerp(-13, -24, charge_ratio)
 
-func on_game_complete(name):
+func store_time(name, time):
 	# make an http post request to backend to update leaderboard
 	var url = "http://localhost:8080/receive_time"
 	var headers = ["Content-Type: application/json"]
 	var body = {
 		"name": name,
-		"time": 10
+		"time": time
 	}
 	var error = http_request.request(
 		url,
@@ -135,3 +144,11 @@ func on_game_complete(name):
 
 func _on_http_request_request_completed(result, response_code, headers, body):
 	print("request completed")
+
+func _on_game_complete(data):
+	var curr_username = GameData.username
+	store_time(curr_username, data)
+	allow_movement = false
+	animated_sprite_2d.hide()
+	
+	

@@ -1,12 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7ae6hyaya63p"]
+[gd_scene load_steps=7 format=3 uid="uid://c7ae6hyaya63p"]
 
 [ext_resource type="PackedScene" uid="uid://brwomb25mlbrb" path="res://scenes/player.tscn" id="1_hnu1a"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_v3bue"]
 [ext_resource type="PackedScene" uid="uid://kpbeu1aikmbh" path="res://scenes/level_manager.tscn" id="2_72oq0"]
+[ext_resource type="PackedScene" uid="uid://bjtsmkrg2fo2n" path="res://scenes/hud.tscn" id="2_76kmi"]
+[ext_resource type="Texture2D" uid="uid://bf7gwx6qt7uvi" path="res://assets/frog/Main Ship - Base - Full health.png" id="5_pv66r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6c24u"]
+size = Vector2(30, 26)
 
 [node name="GameManager" type="Node"]
 script = ExtResource("1_v3bue")
 
+[node name="HUD" parent="." instance=ExtResource("2_76kmi")]
+
 [node name="Player" parent="." instance=ExtResource("1_hnu1a")]
 
 [node name="LevelManager" parent="." instance=ExtResource("2_72oq0")]
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(68, -140)
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture_filter = 1
+texture = ExtResource("5_pv66r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_6c24u")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

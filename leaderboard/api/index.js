@@ -38,7 +38,7 @@ app.post('/receive_time', async (req, res) => {
     const { name, time } = req.body;
     console.log(`body of request: ${name}, ${time}`);
     if (!name || !time) {
-        res.status(400).send({ message: 'Name and time are required' });
+        return res.status(400).send({ message: 'Name and time are required' });
     }
     try {
         await client.connect();
@@ -49,11 +49,13 @@ app.post('/receive_time', async (req, res) => {
             time: time,
         });
         console.log(`Successfully inserted document with _id: ${result.insertedId}`);
+        res.status(200).send({ message: 'Time received' });
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: 'Error saving data to database' });
+    } finally {
+        await client.close()
     }
-    res.status(200).send({ message: 'Time received' });
 });
 
 const PORT = process.env.PORT || 8080;
