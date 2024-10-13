@@ -44,10 +44,6 @@ func _ready():
 	var game_manager = get_parent()
 	game_manager.gc_signal.connect(_on_game_complete)
 	game_manager.curr_temp.connect(_handle_temp)
-	
-func _process(delta):
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		find_nearest_target()
 
 func _physics_process(delta):
 	# if not on floor (jumping) handle gravity
@@ -56,6 +52,9 @@ func _physics_process(delta):
 	# otherwise if on floor, reset velocity x
 	else:
 		velocity.x = 0
+		
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		find_nearest_target()
 	
 	detect_collisions_from_layer()
 	
@@ -66,7 +65,7 @@ func _physics_process(delta):
 			animated_sprite_2d.flip_h = false
 		elif Input.is_action_pressed("move_right"):
 			velocity.x = move_speed
-			animated_sprite_2d.flip_h = true			
+			animated_sprite_2d.flip_h = true
 		
 	handle_jump(delta)
 
@@ -103,12 +102,14 @@ func handle_jump(delta):
 			animated_sprite_2d.play("jumping")
 			
 	# projectile motion logic
-	if Input.is_action_just_pressed("move_left"):
+	if Input.is_action_pressed("move_left"):
 		move_direction = -1
 		animated_sprite_2d.flip_h = false
-	elif Input.is_action_just_pressed("move_right"):
+	elif Input.is_action_pressed("move_right"):
 		move_direction = 1
 		animated_sprite_2d.flip_h = true
+	else:
+		move_direction = 0
 	
 # linear interpolation between 2 values to scale the jump force
 func lerp(a, b, t):
