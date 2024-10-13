@@ -25,12 +25,15 @@ var jump_power_multiplier = 1
 
 var allow_movement = true
 
+@onready var toungue = $"../Toungue"
+@onready var search_area = $SearchArea
+
 func _ready():
 	# add player to the player ground
 	add_to_group("player")
 	# adjust the camera size
 	var viewport_size = get_viewport_rect().size
-	var tilemap_size = level_manager.get_child(0).get_used_rect().size*16
+	var tilemap_size = level_manager.get_child(1).get_used_rect().size*16
 	camera_2d.zoom = Vector2(viewport_size.x/tilemap_size.x, viewport_size.x/tilemap_size.x)
 	
 	# hide the power meter initially and death label
@@ -42,6 +45,10 @@ func _ready():
 	game_manager.gc_signal.connect(_on_game_complete)
 	game_manager.curr_temp.connect(_handle_temp)
 	
+func _process(delta):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		find_nearest_target()
+
 func _physics_process(delta):
 	# if not on floor (jumping) handle gravity
 	if not is_on_floor():
@@ -174,3 +181,20 @@ func restart_game():
 func _on_animated_sprite_2d_animation_finished():
 	if (animated_sprite_2d.animation == "DEATH"):
 		restart_game()
+		
+func find_nearest_target():
+	var nearest_block = null
+	var shortest_distance = INF
+	
+	# Iterate over all areas overlapping the search area
+	for area in search_area.get_overlapping_areas():
+		# Check if the area is in the "target_blocks" group
+		if area.is_in_group("target_blocks"):
+			var distance = global_position.distance_to(area.global_position)
+			if distance < shortest_distance:
+				shortest_distance = distance
+				nearest_block = area
+
+	# If a target block is found, call process_target on the tongue
+	if nearest_block:
+		toungue.process_target(nearest_block)

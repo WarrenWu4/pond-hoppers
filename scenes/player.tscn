@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://brwomb25mlbrb"]
+[gd_scene load_steps=24 format=3 uid="uid://brwomb25mlbrb"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_iu422"]
 [ext_resource type="Texture2D" uid="uid://cfr0wd774bms2" path="res://assets/frog/Idle.png" id="2_r7aeb"]
@@ -125,6 +125,9 @@ func _process(delta):
 	pass
 "
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_v48a5"]
+radius = 93.0215
+
 [node name="Player" type="CharacterBody2D"]
 texture_filter = 1
 collision_mask = 3
@@ -177,6 +180,12 @@ offset_bottom = 6.0
 theme_override_fonts/font = ExtResource("6_wrk8t")
 theme_override_font_sizes/font_size = 8
 text = "you overheated :("
+
+[node name="SearchArea" type="Area2D" parent="."]
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SearchArea"]
+shape = SubResource("CircleShape2D_v48a5")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

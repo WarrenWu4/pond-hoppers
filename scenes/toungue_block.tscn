@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c10l336fl0ifr"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1wnx8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_26jd0"]
+
+[node name="ToungueBlock" type="Node2D"]
+
+[node name="Area2D" type="Area2D" parent="."]
+material = SubResource("CanvasItemMaterial_1wnx8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_26jd0")
