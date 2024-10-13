@@ -13,6 +13,13 @@ var charge_time = 0.0
 var max_charge_time = 2
 var move_direction = 0
 
+@onready var toungue = $"../Toungue"
+@onready var search_area = $SearchArea
+
+func _process(delta):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		find_nearest_target()
+
 func _physics_process(delta):
 	# if not on floor (jumping) handle gravity
 	if not is_on_floor():
@@ -69,3 +76,28 @@ func detect_collisions_from_layer():
 			# might hit an object horizontally that's not a wall
 			if normal.x != 0:  # If the collision was horizontal (wall)
 				velocity.x = 1.2*move_speed  # Reverse the x velocity for bouncing
+
+
+
+#func _on_search_area_area_entered(area: Area2D) -> void:
+	#print('hell2o')
+	#if area.is_in_group("target_blocks"):
+		#toungue.process_target(area)
+		
+
+func find_nearest_target():
+	var nearest_block = null
+	var shortest_distance = INF
+	
+	# Iterate over all areas overlapping the search area
+	for area in search_area.get_overlapping_areas():
+		# Check if the area is in the "target_blocks" group
+		if area.is_in_group("target_blocks"):
+			var distance = global_position.distance_to(area.global_position)
+			if distance < shortest_distance:
+				shortest_distance = distance
+				nearest_block = area
+
+	# If a target block is found, call process_target on the tongue
+	if nearest_block:
+		toungue.process_target(nearest_block)
