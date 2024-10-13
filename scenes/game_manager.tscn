@@ -1,8 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c7ae6hyaya63p"]
+[gd_scene load_steps=9 format=3 uid="uid://c7ae6hyaya63p"]
 
 [ext_resource type="PackedScene" uid="uid://brwomb25mlbrb" path="res://scenes/player.tscn" id="1_hnu1a"]
 [ext_resource type="PackedScene" uid="uid://cddjoy52gov75" path="res://scenes/toungue.tscn" id="1_kbl20"]
 [ext_resource type="Texture2D" uid="uid://djcphbdxsqgwq" path="res://assets/platforms.png" id="2_4vhfn"]
+[ext_resource type="TileSet" uid="uid://f6t8hht1ehem" path="res://assets/grassyplatforms.tres" id="3_tketw"]
+[ext_resource type="Texture2D" uid="uid://dk5amyf3l4nfm" path="res://assets/ShineOnSprites/BackgroundImages/ForestBG4.png" id="5_uhoac"]
+[ext_resource type="TileSet" uid="uid://tbx4sjbp4es3" path="res://assets/darkTreeLeafPlatforms.tres" id="6_oguhd"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gb5v3"]
 texture = ExtResource("2_4vhfn")
@@ -33,8 +36,24 @@ position = Vector2(1, 0)
 [node name="Player" parent="." instance=ExtResource("1_hnu1a")]
 collision_mask = 2
 
+[node name="grass_level_1" type="TileMap" parent="."]
+light_mask = 3
+tile_set = ExtResource("3_tketw")
+format = 2
+layer_0/tile_data = PackedInt32Array(327666, 41, 0, 65523, 27, 0, 131059, 30, 0, 196595, 31, 0, 262131, 34, 0, 327667, 37, 0, 393203, 44, 0, 458739, 47, 0, 65524, 28, 0, 262132, 35, 0, 327668, 38, 0, 393204, 42, 0, 458740, 46, 0, 524276, 52, 0, 65525, 29, 0, 131061, 32, 0, 196597, 33, 0, 327669, 39, 0, 393205, 43, 0, 458741, 49, 0, 524277, 53, 0, 262134, 36, 0, 327670, 40, 0, 393206, 44, 0, 458743, 50, 0, -6, 27, 0, -5, 28, 0, -4, 28, 0, -3, 29, 0)
+
 [node name="TempFloor" type="TileMap" parent="."]
 texture_filter = 1
 tile_set = SubResource("TileSet_hfimn")
 format = 2
-layer_0/tile_data = PackedInt32Array(131071, 65536, 0, 65536, 131072, 0, -65533, 131072, 0, -65534, 131072, 0, 131070, 131072, 0, 131069, 131072, 0, 131068, 131072, 0, 131067, 131072, 0, 131066, 131072, 0, 65537, 131072, 0, 65538, 131072, 0, 65539, 131072, 0, 65540, 131072, 0, 65541, 131072, 0, 65542, 131072, 0, 65543, 131072, 0, -2, 131072, 0, -3, 131072, 0, -4, 131072, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(0, -70.5)
+scale = Vector2(0.5, 0.8125)
+texture = ExtResource("5_uhoac")
+
+[node name="dark_grass_level_1" type="TileMap" parent="."]
+tile_set = ExtResource("6_oguhd")
+format = 2
+layer_0/tile_data = PackedInt32Array(131064, 8, 0, 131065, 10, 0, 131066, 10, 0, 131067, 10, 0, 131068, 10, 0, 131069, 10, 0, 131070, 10, 0, 131071, 10, 0, 65536, 10, 0, 65537, 10, 0, 65538, 10, 0, 65539, 10, 0, 65540, 10, 0, 65541, 10, 0, 65542, 10, 0, 65543, 12, 0, 65528, 5, 0, -8, 5, 0, -65544, 5, 0, -131080, 5, 0, -196616, 5, 0, -262152, 5, 0, -327688, 5, 0, -393224, 5, 0, -458745, 7, 0, -393209, 7, 0, -327673, 7, 0, -262137, 7, 0, -196601, 7, 0, -131065, 7, 0, -65529, 7, 0, 7, 7, 0, -720889, 7, 0, -655353, 7, 0, -589817, 7, 0, -524281, 7, 0, -655368, 5, 0, -589832, 5, 0, -524296, 5, 0, -458760, 5, 0)
