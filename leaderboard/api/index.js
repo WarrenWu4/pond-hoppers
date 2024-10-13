@@ -30,19 +30,20 @@ app.get("/leaderboard", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/leaderboard.html"));
 });
 
-app.get("/placements", (req, res) => {
-  // Dummy data for leaderboard (time is in seconds)
-  const dummyData = [
-    { name: "Warren", time: 0 },
-    { name: "Jonathump", time: 256 },
-    { name: "frog", time: 389 },
-    { name: "tidbit", time: 477 },
-    { name: "dumbo", time: 314 },
-    { name: "superDuperPooper", time: 445 },
-  ];
-  const sortedData = dummyData.sort((a, b) => a.time - b.time);
-
-  res.status(200).send({ placements: dummyData });
+app.get("/placements", async (req, res) => {
+    try {
+        await client.connect();
+        const database = client.db('leaderboard');
+        const collection = database.collection('times');
+        
+        const placements = await collection.find().sort({ time: 1 }).toArray();
+        res.status(200).send({ placements: placements });
+    } catch (error) {
+        console.error(err);
+        res.status(500).send({ message: 'Error retreiving data from database' });
+    } finally {
+        await client.close()
+    }
 });
 
 app.post('/receive_time', async (req, res) => {
@@ -67,23 +68,7 @@ app.post('/receive_time', async (req, res) => {
     } finally {
         await client.close()
     }
-  });
-// This shoulddddd work -- add some more data and test it
-// app.get("/placements", async (req, res) => {
-//   try {
-//     await client.connect();
-//     const db = client.db(dbName);
-//     const collection = db.collection("times");
-
-//     // Fetch the placements sorted by time in ascending order
-//     const placements = await collection.find().sort({ time: 1 }).toArray();
-
-//     res.status(200).send({ placements: placements });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send({ message: "Error fetching leaderboard data" });
-//   }
-// });
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
